@@ -1,0 +1,929 @@
+{
+  "name": "Competetor analyser",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -320,
+        -16
+      ],
+      "id": "58d54eba-61f8-4a26-b500-a6abd2d5bc7f",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        352,
+        -16
+      ],
+      "id": "0ad7e0d4-1006-416b-9a84-b03d10434743",
+      "name": "Wait1",
+      "webhookId": "0faa0959-a0e8-479b-a340-33e9aa84e080"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        368,
+        752
+      ],
+      "id": "ec26b274-e3b8-4db6-a04e-2baaf5719bf3",
+      "name": "Wait",
+      "webhookId": "0dd8bc2e-3d54-47d9-a491-7880e1e114f3"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -320,
+        544
+      ],
+      "id": "84472f16-f395-40a0-b0df-cdbf6dd2bc0b",
+      "name": "Loop Over Items1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.apify.com/v2/acts/apify~instagram-reel-scraper/run-sync-get-dataset-items",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"username\": [\n    \"{{ $json['USER NAME'] }}\"\n  ],\n  \"resultsLimit\": 10\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -96,
+        -96
+      ],
+      "id": "9f723720-f189-4146-a492-6c3dbb167eff",
+      "name": "Apify",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "lXMXNvUdbgdHz7D4",
+          "name": "Apify - Subrahmanya"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "html": "<tr>\n  <td width=\"50%\" valign=\"top\" style=\"padding:5px;\">\n    {{\n      '<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#fff;border-radius:4px;overflow:hidden;\">'\n      .concat('<tr><td style=\"padding:0;\">')\n      .concat('<a href=\"https://www.instagram.com/reel/')\n      .concat(encodeURIComponent($json.Shortcode))\n      .concat('/\" target=\"_blank\" style=\"text-decoration:none;color:inherit;\">')\n      .concat('<img src=\"').concat(encodeURI($json.Thumbnail)).concat(alt='Insta reels')\n      .concat('\" onerror=\"this.src=\\'https://via.placeholder.com/500x281?text=Image+Not+Available\\';\"')\n      .concat(' style=\"width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;object-position:center;border:none;display:block;\">')\n      .concat('<p style=\"text-align:center;padding:8px 0;margin:0;font-size:14px;font-weight:bold;\">Watch Reel</p>')\n      .concat('</a>')\n      .concat('</td></tr><tr><td style=\"padding:10px;font-family:Arial,sans-serif;\">')\n      .concat('<p style=\"font-size:12px;color:#666;margin:0 0 3px;\">Creator - <b>')\n      .concat('<b>').concat($json['Owner Name']).concat('</b></p>')\n      .concat('<p style=\"font-size:12px;color:#666;margin:0 0 3px;\">Total likes - <b>')\n      .concat('<b>').concat($json['Total likes']).concat('</b></p>')\n      .concat('<p style=\"font-size:12px;color:#666;margin:0 0 3px;\">Total comments - <b>')\n      .concat('<b>').concat($json['Total comment\\'s ']).concat('</b></p>')\n      .concat('<p style=\"font-size:12px;color:#666;margin:0 0 3px;\">Total Views - <b>')\n      .concat('<b>').concat($json.views).concat('</b></p>')\n      .concat('<p style=\"font-size:12px;color:#666;margin:0 0 3px;\">Total Plays - <b>')\n      .concat('<b>').concat($json.plays).concat('</b></p>')\n      .concat('<p style=\"font-size:12px;color:#666;margin:0 0 3px;\">Reel Duration - <b>')\n      .concat('<b>').concat($json['Reel duration']).concat('</b> seconds</p>')\n      .concat('</td></tr></table>')\n    }}\n  </td>\n</tr>"
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        128,
+        288
+      ],
+      "id": "5e2594ed-2592-4453-856f-aff01f648992",
+      "name": "Format"
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "html"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        352,
+        288
+      ],
+      "id": "9df61fee-3af3-43b5-b285-bfef5ec20545",
+      "name": "Combine"
+    },
+    {
+      "parameters": {
+        "sendTo": "ankitraireads@gmail.com",
+        "subject": "Banger videos of this week",
+        "message": "=<!DOCTYPE html>\n<html>\n<head>\n  <meta charset=\"UTF-8\">\n  <style>\n    body {\n      font-family: Arial, sans-serif;\n      padding: 20px;\n      color: #222;\n      background-color: \n#f7f7f7;\n    }\n    .container {\n      width: 100%;\n      max-width: 600px;\n      margin: auto;\n    }\n    .video-table {\n      width: 100%;\n      border-spacing: 16px;\n    }\n    .thumb-container {\n      width: 100%;\n      overflow: hidden;\n      height: 155px;\n      border-radius: 4px;\n      display: flex;\n      align-items: center;\n      justify-content: center;\n    }\n    .thumb {\n      width: 100%;\n      object-fit: cover;\n      height: 155px;\n    }\n    .title {\n      font-size: 14px;\n      font-weight: bold;\n      margin: 8px 0 4px;\n    }\n    .channel, .duration {\n      font-size: 12px;\n      color: #666;\n    }\n  </style>\n</head>\n<body>\n  <div class=\"container\">\n    <h2>Insta Trending Reels Detector, {{ $now.format('dd-MM-yyyy') }}</h2>\n    <table class=\"video-table\">\n     {{ $json.html }}\n    </table>\n  </div>\n</body>\n</html>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        576,
+        288
+      ],
+      "id": "f054a733-6721-4a72-a7cb-92cee7e93e2f",
+      "name": "Send Email",
+      "webhookId": "8814fc15-e65f-4c78-9361-df0d4f847df4",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "IDe3oqxR8STMpGcN",
+          "name": "An 97"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "3a054b53-a795-44e1-9b2f-bae495bdf725",
+              "leftValue": "={{ $json.plays }}",
+              "rightValue": "={{\n  Math.floor(\n(\n    $('Get row(s) in sheet2').all().reduce((sum, item) => sum + Number(item.json.plays || 0), 0)\n    / $('Get row(s) in sheet2').all().length\n  )*2)\n}}\n",
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        128,
+        688
+      ],
+      "id": "c1774d40-8a00-41f1-a5c9-c9d724457a04",
+      "name": "Filter Trending reels",
+      "alwaysOutputData": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "5a4393a7-b968-4b23-99d0-99db2a0f7d5b",
+              "leftValue": "={{ $json.Shortcode }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -176,
+        352
+      ],
+      "id": "f654352b-1afa-4bf3-b9fc-c0e811cea385",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1qr9zu3GhKqZlXeRO2SShqC4RVCOcwiR9UoPcAFbfc8w",
+          "mode": "list",
+          "cachedResultName": "N8n - Instagram - Trend Detector",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1qr9zu3GhKqZlXeRO2SShqC4RVCOcwiR9UoPcAFbfc8w/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Channels",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1qr9zu3GhKqZlXeRO2SShqC4RVCOcwiR9UoPcAFbfc8w/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Analyze",
+              "lookupValue": "Yes"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -544,
+        -16
+      ],
+      "id": "37620a17-6cca-4788-af08-a49886b6c564",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "9KaAVNJMQHZIkiU7",
+          "name": "An 97"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1qr9zu3GhKqZlXeRO2SShqC4RVCOcwiR9UoPcAFbfc8w",
+          "mode": "list",
+          "cachedResultName": "N8n - Instagram - Trend Detector",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1qr9zu3GhKqZlXeRO2SShqC4RVCOcwiR9UoPcAFbfc8w/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $('Loop Over Items').first().json['USER NAME'] }}",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Shortcode": "={{ $json.shortCode }}",
+            "Owner Name": "={{ $json.ownerFullName }}",
+            "Caption": "={{ $json.caption }}",
+            "Video URL": "={{ $json.url }}",
+            "Total likes": "={{ $json.likesCount }}",
+            "views": "={{ $json.videoViewCount }}",
+            "plays": "={{ $json.videoPlayCount }}",
+            "Reel duration": "={{ $json.videoDuration }}",
+            "Song used": "={{ $json.musicInfo.song_name }}",
+            "Download url": "={{ $json.videoUrl }}",
+            "Thumbnail": "={{ $json.displayUrl }}",
+            "Total comment's ": "={{ $json.commentsCount }}"
+          },
+          "matchingColumns": [
+            "Shortcode"
+          ],
+          "schema": [
+            {
+              "id": "Owner Name",
+              "displayName": "Owner Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Shortcode",
+              "displayName": "Shortcode",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Caption",
+              "displayName": "Caption",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Video URL",
+              "displayName": "Video URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Total comment's ",
+              "displayName": "Total comment's ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Total likes",
+              "displayName": "Total likes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Thumbnail",
+              "displayName": "Thumbnail",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "views",
+              "displayName": "views",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "plays",
+              "displayName": "plays",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Reel duration",
+              "displayName": "Reel duration",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Song used",
+              "displayName": "Song used",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Download url",
+              "displayName": "Download url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        128,
+        -96
+      ],
+      "id": "d6904dd2-8355-4b99-ac64-a221613f7644",
+      "name": "Append or update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "9KaAVNJMQHZIkiU7",
+          "name": "An 97"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1qr9zu3GhKqZlXeRO2SShqC4RVCOcwiR9UoPcAFbfc8w",
+          "mode": "list",
+          "cachedResultName": "N8n - Instagram - Trend Detector",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1qr9zu3GhKqZlXeRO2SShqC4RVCOcwiR9UoPcAFbfc8w/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Channels",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1qr9zu3GhKqZlXeRO2SShqC4RVCOcwiR9UoPcAFbfc8w/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Analyze",
+              "lookupValue": "Yes"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -528,
+        544
+      ],
+      "id": "6eb3dddd-8a1c-4bdb-b58a-a8a73478c410",
+      "name": "Get row(s) in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "9KaAVNJMQHZIkiU7",
+          "name": "An 97"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1qr9zu3GhKqZlXeRO2SShqC4RVCOcwiR9UoPcAFbfc8w",
+          "mode": "list",
+          "cachedResultName": "N8n - Instagram - Trend Detector",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1qr9zu3GhKqZlXeRO2SShqC4RVCOcwiR9UoPcAFbfc8w/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1325905714,
+          "mode": "list",
+          "cachedResultName": "Top reels",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1qr9zu3GhKqZlXeRO2SShqC4RVCOcwiR9UoPcAFbfc8w/edit#gid=1325905714"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Shortcode": "={{ $json.Shortcode }}",
+            "Creator": "={{ $json['Owner Name'] }}",
+            "Reel link": "={{ $json['Video URL'] }}",
+            "Reel plays": "={{ $json.plays }}",
+            "Reel duration": "={{ $json['Reel duration'] }}",
+            "Total likes": "={{ $json['Total likes'] }}",
+            "Total comments": "={{ $json['Total comment\\'s '] }}",
+            "Date": "={{ $now.format('dd-MM-yyyy') }}",
+            "Download URL": "={{ $json['Download url'] }}"
+          },
+          "matchingColumns": [
+            "Shortcode"
+          ],
+          "schema": [
+            {
+              "id": "Creator",
+              "displayName": "Creator",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Shortcode",
+              "displayName": "Shortcode",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Reel link",
+              "displayName": "Reel link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Reel plays",
+              "displayName": "Reel plays",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Reel duration",
+              "displayName": "Reel duration",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Total likes",
+              "displayName": "Total likes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Total comments",
+              "displayName": "Total comments",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Download URL",
+              "displayName": "Download URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Transcript required",
+              "displayName": "Transcript required",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Transcript",
+              "displayName": "Transcript",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        128,
+        480
+      ],
+      "id": "033e68d2-4f89-4902-a415-fc1387462934",
+      "name": "Append or update row in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "9KaAVNJMQHZIkiU7",
+          "name": "An 97"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1qr9zu3GhKqZlXeRO2SShqC4RVCOcwiR9UoPcAFbfc8w",
+          "mode": "list",
+          "cachedResultName": "N8n - Instagram - Trend Detector",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1qr9zu3GhKqZlXeRO2SShqC4RVCOcwiR9UoPcAFbfc8w/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $json['USER NAME'] }}",
+          "mode": "name"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -96,
+        688
+      ],
+      "id": "22e9adf1-c2b6-4391-926d-11a9d25855d0",
+      "name": "Get row(s) in sheet2",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "9KaAVNJMQHZIkiU7",
+          "name": "An 97"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "weeks",
+              "triggerAtDay": [
+                1
+              ],
+              "triggerAtHour": 9
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -752,
+        544
+      ],
+      "id": "3b9c8186-60a8-4eff-b572-e9de5a94423c",
+      "name": "Schedule Trigger 2"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "weeks",
+              "triggerAtDay": [
+                1
+              ],
+              "triggerAtHour": 8,
+              "triggerAtMinute": 50
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -768,
+        -16
+      ],
+      "id": "48e0f206-b4d0-4997-8910-fe54ad6893de",
+      "name": "Schedule Trigger 1"
+    },
+    {
+      "parameters": {
+        "content": "## Apify\nhttps://console.apify.com/\nSetup APi",
+        "height": 112,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -160,
+        -240
+      ],
+      "id": "61008509-ab86-4bb3-b871-3baddf8da250",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Competetor Scraper",
+        "height": 368,
+        "width": 1632,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -928,
+        -160
+      ],
+      "id": "cbf8e72c-307d-4224-bd6f-3a3511672918",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Analyzer",
+        "height": 704,
+        "width": 1696,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -912,
+        288
+      ],
+      "id": "e631e24b-dff1-4d3d-bb83-dde3fef0c682",
+      "name": "Sticky Note2"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Apify",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items1": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get row(s) in sheet2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Apify": {
+      "main": [
+        [
+          {
+            "node": "Append or update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format": {
+      "main": [
+        [
+          {
+            "node": "Combine",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Combine": {
+      "main": [
+        [
+          {
+            "node": "Send Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Trending reels": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Format",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Append or update row in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append or update row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet2": {
+      "main": [
+        [
+          {
+            "node": "Filter Trending reels",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger 2": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger 1": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "7da0c789-7740-46e3-a705-28400d94871b",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "a1f1d6c855d20456d552adbe38413c210b4e225b6657f7d0db4470477bb000ff"
+  },
+  "id": "CDvEsY5RXd0Hrnv2vmAEg",
+  "tags": []
+}
